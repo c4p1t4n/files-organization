@@ -1,12 +1,17 @@
 import os
 import shutil
 
+
+"""
+TODO: pegar pastes do input do terminal args -k key -p folder/destionation/file
+"""
 pastes = {
-   'images': os.getenv('HOME')+'/Downloads/Images/',
-   'drawio': os.getenv('HOME')+'/Downloads/Drawio/',
+   'images': os.getenv('HOME')+'/Downloads/images/',
+   'drawio': os.getenv('HOME')+'/Downloads/drawio/',
    'documents': os.getenv('HOME')+'/Documents/documents/',
-   'compress': os.getenv('HOME')+'/Downloads/compression/'
+   'compression': os.getenv('HOME')+'/Downloads/compression/'
 }
+
 def listFiles(path):
     dir = os.getenv('HOME')+ path ;
     return os.listdir(dir)
@@ -15,36 +20,23 @@ def listFiles(path):
 def categories_files(listFiles):
     current_dir = os.getenv('HOME')+'/Downloads/'
     for filename in listFiles:
-        try:
-            if(filename.endswith('.jpg') or filename.endswith('.png') or filename.endswith('.jpeg')):
-                movies_files(current_dir+filename,pastes['images']+filename)
-        except FileNotFoundError:
-            os.mkdir(pastes['images'])
+        if(filename.endswith('.jpg') or filename.endswith('.png') or filename.endswith('.jpeg')):
             movies_files(current_dir+filename,pastes['images']+filename)
-        try:
-            if(filename.endswith('.doc') or filename.endswith('.docx') or filename.endswith('.pdf')):
-                movies_files(current_dir+filename,pastes['documents']+filename)
-        except FileNotFoundError:
-            os.mkdir(pastes['documents'])
+        elif(filename.endswith('.doc') or filename.endswith('.docx') or filename.endswith('.pdf')):
             movies_files(current_dir+filename,pastes['documents']+filename)
-        try:
-            if(filename.endswith('.drawio')):
-                movies_files(current_dir+filename,pastes['drawio']+filename)
-        except FileNotFoundError:
-            os.mkdir(pastes['drawio'])
-            movies_files(current_dir+filename,pastes['drawio']+filename)
-        try:
-            if(filename.endswith('.zip') or filename.endswith('.deb') or filename.endswith('.tar.bz2') or filename.endswith('.gz') or filename.endswith('.tar.xz')):
-                movies_files(current_dir+filename,pastes['compress']+filename)
-        except FileNotFoundError:
-            os.mkdir(pastes['compress'])
+        elif(filename.endswith('.drawio')):
+            movies_files(current_dir+filename,pastes['drawio']+filename)  
+        elif(filename.endswith('.zip') or filename.endswith('.deb') or filename.endswith('.tar.bz2') or filename.endswith('.gz') or filename.endswith('.tar.xz')):
             movies_files(current_dir+filename,pastes['compress']+filename)
         
 
         
 def movies_files(current_dir, destination_dir):
-    shutil.move(current_dir, destination_dir) 
-    
+    try:
+        shutil.move(current_dir, destination_dir) 
+    except FileNotFoundError:
+        destination_dir.split('/')[-2]
+
 def main():
     dir = listFiles('/test')
     print(dir)
