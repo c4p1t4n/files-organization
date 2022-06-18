@@ -8,7 +8,7 @@ pastes = {
    'compress': os.getenv('HOME')+'/Downloads/compression/'
 }
 def listFiles(path):
-    dir = os.getenv('HOME')+'/Downloads' ;
+    dir = os.getenv('HOME')+ path ;
     return os.listdir(dir)
 
     
@@ -43,11 +43,11 @@ def categories_files(listFiles):
 
         
 def movies_files(current_dir, destination_dir):
-    shutil.move(current_dir, destination_dir)
+    shutil.move(current_dir, destination_dir) 
     
 def main():
-    dir = listFiles('/Downloads')
-    categories_files(dir)
+    dir = listFiles('/test')
+    print(dir)
 
 if __name__ == '__main__':
     main()
