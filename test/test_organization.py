@@ -45,6 +45,10 @@ class testClass(unittest.TestCase):
         Deletando arquivos e pastas
         """
         shutil.rmtree(testCurrentDirectory)
+    """
+    TODO: resolver o problema de arquivo já existente e de arquivo não existente
+    
+    """
     def test_move_files(self):
         """
         Pegando variavel de ambiente home
