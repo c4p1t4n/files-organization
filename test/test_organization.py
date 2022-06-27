@@ -6,14 +6,15 @@ import shutil
 from pathlib import Path
 
 class testClass(unittest.TestCase):
-    def test_moves(self):
+    def test_list_files(self):
         """
         Pegando variavel de ambiente home
         deleta caso exista pasta temporaria
         e criando pasta temporaria test
         """
         PATH = os.getenv('HOME')
-        shutil.rmtree(PATH+'/test/')
+        if os.path.isdir(PATH+'/test'):
+            shutil.rmtree(PATH+'/test')
         os.mkdir(PATH+'/test')
         """
         Criando arquivo temporario
@@ -28,5 +29,8 @@ class testClass(unittest.TestCase):
         """
         Deletando arquivos e pastas
         """
+    
+        
+
         
         
