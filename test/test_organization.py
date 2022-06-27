@@ -13,22 +13,29 @@ class testClass(unittest.TestCase):
         e criando pasta temporaria test
         """
         PATH = os.getenv('HOME')
-        if os.path.isdir(PATH+'/test'):
-            shutil.rmtree(PATH+'/test')
-        os.mkdir(PATH+'/test')
+        testCurrentDirectory = PATH+'/test'
+        if os.path.isdir(testCurrentDirectory):
+            shutil.rmtree(testCurrentDirectory)
+        os.mkdir(testCurrentDirectory)
         """
         Criando arquivo temporario
         """
-        file = open(PATH+'/test/file.txt' , 'w+')
+        file = open(testCurrentDirectory+'/file.txt' , 'w+')
         file.close
+        
         """
         Listando arquivos
         """
         list = organization.listFiles('/test')
         self.assertEqual(len(list),1)
+        file = open(testCurrentDirectory+'/file2.txt' , 'w+')
+        file.close
+        list = organization.listFiles('/test')
+        self.assertEqual(len(list),2)
         """
         Deletando arquivos e pastas
         """
+        shutil.rmtree(testCurrentDirectory)
     def test_move_files(self):
         """
         Pegando variavel de ambiente home
@@ -36,15 +43,17 @@ class testClass(unittest.TestCase):
         e criando pastas temporarias para teste
         """
         PATH = os.getenv('HOME')
-        if os.path.isdir(PATH+'/test') and os.path.isfile(PATH+'/testMovieFiles') :
-            shutil.rmtree(PATH+'/test/')
-            shutil.rmtree(PATH+'/testMovieFiles')
-        elif os.path.isdir(PATH+'/test'):
-            shutil.rmtree(PATH+'/test/')
-        elif os.path.isfile(PATH+'/testMovieFiles'):
-            shutil.rmtree(PATH+'/testMovieFiles')
-        os.mkdir(PATH+'/test')
-        os.mkdir(PATH+'/testMovieFiles')
+        testCurrentDirectory = PATH+'/test'
+        testMoveDirectory = PATH+'/testMovieFiles'
+        if os.path.isdir(testCurrentDirectory) and os.path.isfile(testMoveDirectory) :
+            shutil.rmtree(testCurrentDirectory)
+            shutil.rmtree(testMoveDirectory)
+        elif os.path.isdir(testCurrentDirectory):
+            shutil.rmtree(testCurrentDirectory)
+        elif os.path.isfile(testMoveDirectory):
+            shutil.rmtree(testMoveDirectory)    
+        os.mkdir(testCurrentDirectory)
+        os.mkdir(testMoveDirectory)
         """
         Criando arquivo temporario de 
         """
