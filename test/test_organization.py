@@ -1,11 +1,20 @@
+from pathlib import Path
 import unittest
 import src.organization as organization
 import os
 import sys
 import shutil
-from pathlib import Path
+
 
 class testClass(unittest.TestCase):
+    def delete_directory(self,dir):
+        shutil.rmtree(dir)
+    def create_directory(self,dir):
+        try:
+            os.mkdir(dir)
+        except FileExistsError:
+            self.delete_directory(dir)
+            os.mkdir(dir)
     def test_list_files(self):
         """
         Pegando variavel de ambiente home
@@ -15,8 +24,8 @@ class testClass(unittest.TestCase):
         PATH = os.getenv('HOME')
         testCurrentDirectory = PATH+'/test'
         if os.path.isdir(testCurrentDirectory):
-            shutil.rmtree(testCurrentDirectory)
-        os.mkdir(testCurrentDirectory)
+           self.delete_directory(testCurrentDirectory)
+        self.create_directory(testCurrentDirectory)
         """
         Criando arquivo temporario
         """
@@ -45,19 +54,20 @@ class testClass(unittest.TestCase):
         PATH = os.getenv('HOME')
         testCurrentDirectory = PATH+'/test'
         testMoveDirectory = PATH+'/testMovieFiles'
-        if os.path.isdir(testCurrentDirectory) and os.path.isfile(testMoveDirectory) :
-            shutil.rmtree(testCurrentDirectory)
-            shutil.rmtree(testMoveDirectory)
+        if os.path.isfile(testMoveDirectory) and os.path.isdir(testCurrentDirectory):
+            self.delete_directory(testCurrentDirectory)
+            self.delete_directory(testMoveDirectory)
         elif os.path.isdir(testCurrentDirectory):
-            shutil.rmtree(testCurrentDirectory)
+            self.delete_directory(testCurrentDirectory)
         elif os.path.isfile(testMoveDirectory):
-            shutil.rmtree(testMoveDirectory)    
-        os.mkdir(testCurrentDirectory)
-        os.mkdir(testMoveDirectory)
+            self.delete_directory(testMoveDirectory)
+                
+        self.create_directory(testCurrentDirectory)
+        self.create_directory(testMoveDirectory)
         """
         Criando arquivo temporario de 
         """
-        file = open(PATH+'/test/file.txt' , 'w+')
+        file = open(testCurrentDirectory+'/file2.txt' , 'w+')
         file.close
         self.assertEqual(len(organization.listFiles(PATH+'/testMovieFiles')),0)
         """
