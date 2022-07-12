@@ -4,6 +4,7 @@ import src.organization as organization
 import os
 import sys
 import shutil
+from src.FileClass import File
 
 
 class testClass(unittest.TestCase):
@@ -79,7 +80,41 @@ class testClass(unittest.TestCase):
         """
         organization.movies_files(PATH+'/test',PATH+'/testMovieFiles')
         self.assertEqual(len(organization.listFiles(PATH+'/testMovieFiles')),1)
+
+    def test_list_filese(self):
+        """
+        Criando variaveis para os diretorios
+        """
+        PATH = os.getenv('HOME')
+        testCurrentDirectory = PATH + 'temp/currentDirTest/'
+        testDestinationDirectory = PATH + 'temp/destinationDirTest/'
+        
+        """
+        Criando os diretorios
+        """
+        os.mkdir(testCurrentDirectory)
+        os.mkdir(testDestinationDirectory)
+        """
+        Instanciando Objeto
+        """
+        text = File(['.txt'],testCurrentDirectory,testDestinationDirectory,)
+        """
+        Criando arquivo temporarios
+        """
+        file = open(testCurrentDirectory+'file.txt' , 'w+')
+        file.close
+
+        self.assertEqual(len(text.listFiles(testCurrentDirectory)),1)
+
+
+        """
+        Deletando diretorios temporarios
+        """
+        self.delete_directory(testCurrentDirectory)
+        self.delete_directory(testDestinationDirectory)
         
 
-        
-        
+
+
+if __name__ == '__main__':
+    unittest.main()
