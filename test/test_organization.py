@@ -16,7 +16,7 @@ class testClass(unittest.TestCase):
         except FileExistsError:
             self.delete_directory(dir)
             os.mkdir(dir)
-    def test_list_files(self):
+    def test_list_files_deprecated(self):
         """
         Pegando variavel de ambiente home
         deleta caso exista pasta temporaria
@@ -81,19 +81,27 @@ class testClass(unittest.TestCase):
         organization.movies_files(PATH+'/test',PATH+'/testMovieFiles')
         self.assertEqual(len(organization.listFiles(PATH+'/testMovieFiles')),1)
 
-    def test_list_filese(self):
+    def test_list_files(self):
         """
         Criando variaveis para os diretorios
         """
         PATH = os.getenv('HOME')
-        testCurrentDirectory = PATH + 'temp/currentDirTest/'
-        testDestinationDirectory = PATH + 'temp/destinationDirTest/'
+        testCurrentDirectory = PATH + '/currentDirTest/'
+        testDestinationDirectory = PATH + '/destinationDirTest/'
         
         """
         Criando os diretorios
         """
-        os.mkdir(testCurrentDirectory)
-        os.mkdir(testDestinationDirectory)
+        try:
+            os.mkdir(testCurrentDirectory)
+            os.mkdir(testDestinationDirectory)
+        except:
+            self.delete_directory(testCurrentDirectory)
+            self.delete_directory(testDestinationDirectory)
+            os.mkdir(testCurrentDirectory)
+            os.mkdir(testDestinationDirectory)
+
+
         """
         Instanciando Objeto
         """
@@ -104,7 +112,7 @@ class testClass(unittest.TestCase):
         file = open(testCurrentDirectory+'file.txt' , 'w+')
         file.close
 
-        self.assertEqual(len(text.listFiles(testCurrentDirectory)),1)
+        self.assertEqual(len(text.list_files(testCurrentDirectory)),1)
 
 
         """
