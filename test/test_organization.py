@@ -10,119 +10,99 @@ from src.FileClass import File
 class testClass(unittest.TestCase):
     def delete_directory(self,dir):
         shutil.rmtree(dir)
+        
     def create_directory(self,dir):
         try:
             os.mkdir(dir)
         except FileExistsError:
             self.delete_directory(dir)
             os.mkdir(dir)
-    def test_list_files_deprecated(self):
+
+    def get_directory(self,name_directory):
         """
-        Pegando variavel de ambiente home
-        deleta caso exista pasta temporaria
-        e criando pasta temporaria test
+        Criando variaveis para os diretorios
         """
-        PATH = os.getenv('HOME')
-        testCurrentDirectory = PATH+'/test'
-        if os.path.isdir(testCurrentDirectory):
-           self.delete_directory(testCurrentDirectory)
-        self.create_directory(testCurrentDirectory)
+        HOME = os.getenv('HOME')
+        PATH = HOME + name_directory
         """
-        Criando arquivo temporario
+        Criando os diretorios
         """
-        file = open(testCurrentDirectory+'/file.txt' , 'w+')
-        file.close
-        
+        try:
+            os.mkdir(PATH)
+        except:
+            self.delete_directory(PATH)
+            os.mkdir(PATH)
+
+        return PATH
+
+    def test_list_files(self):
         """
-        Listando arquivos
+        Criando diretorios temporarios
         """
-        list = organization.listFiles('/test')
-        self.assertEqual(len(list),1)
-        file = open(testCurrentDirectory+'/file2.txt' , 'w+')
-        file.close
-        list = organization.listFiles('/test')
-        self.assertEqual(len(list),2)
+        test_current_directory = self.get_directory('/test_current_directory/')
+        test_destination_directory = self.get_directory('/test_destination_directory/')
         """
-        Deletando arquivos e pastas
+        Instanciando Objeto
         """
-        shutil.rmtree(testCurrentDirectory)
-    """
-    TODO: resolver o problema de arquivo já existente e de arquivo não existente
+        text = File(['.txt'],test_current_directory,test_destination_directory,)
+        """
+        Criando arquivo temporarios
+        """
+        file_txt = open(test_current_directory+'file.txt' , 'w+')
+        file_txt.close
+        file_img = open(test_current_directory+'file.img' , 'w+')
+        file_img.close
+        ################
+        self.assertEqual(len(text.list_files(test_current_directory)),1)
+        """
+        Deletando diretorios temporarios
+        """
+        self.delete_directory(test_current_directory)
+        self.delete_directory(test_destination_directory)
     
-    """
+
+
     def test_move_files(self):
         """
         Pegando variavel de ambiente home
         deleta caso exista pasta temporaria
         e criando pastas temporarias para teste
         """
-        PATH = os.getenv('HOME')
-        testCurrentDirectory = PATH+'/test'
-        testMoveDirectory = PATH+'/testMovieFiles'
-        if os.path.isfile(testMoveDirectory) and os.path.isdir(testCurrentDirectory):
-            self.delete_directory(testCurrentDirectory)
-            self.delete_directory(testMoveDirectory)
-        elif os.path.isdir(testCurrentDirectory):
-            self.delete_directory(testCurrentDirectory)
-        elif os.path.isfile(testMoveDirectory):
-            self.delete_directory(testMoveDirectory)
-                
-        self.create_directory(testCurrentDirectory)
-        self.create_directory(testMoveDirectory)
-        """
-        Criando arquivo temporario de 
-        """
-        file = open(testCurrentDirectory+'/file2.txt' , 'w+')
-        file.close
-        self.assertEqual(len(organization.listFiles(PATH+'/testMovieFiles')),0)
-        """
-        Movendo arquivo
-        """
-        organization.movies_files(PATH+'/test',PATH+'/testMovieFiles')
-        self.assertEqual(len(organization.listFiles(PATH+'/testMovieFiles')),1)
-
-    def test_list_files(self):
-        """
-        Criando variaveis para os diretorios
-        """
-        PATH = os.getenv('HOME')
-        testCurrentDirectory = PATH + '/currentDirTest/'
-        testDestinationDirectory = PATH + '/destinationDirTest/'
+        test_destination_directory = self.get_directory('/test_destination_directory/')
+        test_current_directory = self.get_directory('/teste_current_directory/')
         
-        """
-        Criando os diretorios
-        """
-        try:
-            os.mkdir(testCurrentDirectory)
-            os.mkdir(testDestinationDirectory)
-        except:
-            self.delete_directory(testCurrentDirectory)
-            self.delete_directory(testDestinationDirectory)
-            os.mkdir(testCurrentDirectory)
-            os.mkdir(testDestinationDirectory)
-
-
+        # if os.path.isfile(testMoveDirectory) and os.path.isdir(test_current_directory):
+        #     self.delete_directory(test_current_directory)
+        #     self.delete_directory(testMoveDirectory)
+        # elif os.path.isdir(test_current_directory):
+        #     self.delete_directory(test_current_directory)
+        # elif os.path.isfile(testMoveDirectory):
+        #     self.delete_directory(testMoveDirectory)
+                
+        # self.create_directory(test_current_directory)
+        # self.create_directory(testMoveDirectory)
         """
         Instanciando Objeto
         """
-        text = File(['.txt'],testCurrentDirectory,testDestinationDirectory,)
+        text = File(['.txt','txt'],test_current_directory,test_destination_directory)
         """
-        Criando arquivo temporarios
+        Criando arquivo temporario de 
         """
-        file = open(testCurrentDirectory+'file.txt' , 'w+')
+        file = open(test_current_directory+'file.txt' , 'w+')
         file.close
-
-        self.assertEqual(len(text.list_files(testCurrentDirectory)),1)
-
-
+        self.assertEqual(len(text.list_files(test_destination_directory)),0)
+        self.assertGreaterEqual(len(text.list_files(test_current_directory)),1)
         """
-        Deletando diretorios temporarios
+        Movendo arquivo
         """
-        self.delete_directory(testCurrentDirectory)
-        self.delete_directory(testDestinationDirectory)
+        text.movies_files()
+        self.assertEqual(len(text.list_files(test_destination_directory)),1)
+
+    
         
 
 
 
 if __name__ == '__main__':
     unittest.main()
+    
