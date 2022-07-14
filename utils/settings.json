@@ -1,0 +1,21 @@
+{
+
+"Imagens" : 
+        { 
+            "origin_directory" : "/home/c4p1/Downloads"
+            ,"destination_directory" : "/home/c4p1/Images"
+            ,"extensions": [".png", ".jpg", ".jpeg",".gif",".svg"] 
+        } ,
+"Documentos" : 
+        { 
+            "origin_directory" : "/home/c4p1/Downloads"
+            ,"destination_directory" : "/home/c4p1/Documentos"
+            ,"extensions": [".pdf", ".docx", ".jpeg",".gif",".svg"] 
+        },
+"Comprimidos" : 
+        { 
+            "origin_directory" : "/home/c4p1/Downloads"
+            ,"destination_directory" : "/home/c4p1/Documentos"
+            ,"extensions": [".zip", ".targz"] 
+        }
+}
